@@ -114,3 +114,68 @@ What does the 95% independent group confidence interval with unequal variances s
 - When subtracting (old - new) the interval contains 0. There is not evidence suggesting that the new system is effective.
 - When subtracting (old - new) the interval contains 0. The new system appears to be effective.
 
+```{r}
+old.mean <- 6
+old.sd <- 2
+old.n <- 100
+old.var <- old.sd^2
+old.var_n <- old.var / old.n
+
+new.mean <- 4
+new.sd <- 0.5
+new.n <- 100
+new.var <- new.sd^2
+new.var_n <- new.var / new.n
+
+(df <- (old.var_n + new.var_n) ^ 2 / 
+   (old.var_n^2 / (old.n - 1) + new.var_n^2 / (new.n - 1)))
+```
+
+```{r}
+alpha=.05
+(t <- qt(1 - alpha / 2, df))
+
+```
+```{r}
+(old.mean - new.mean) + c(-1, 1) * t * sqrt(old.var_n + new.var_n)
+
+```
+
+The mean difference states that the waiting time to see a physician is, in average, greater in the old system than in the new one. Thus, the new system is more efficient. 
+
+**The correct answer is: When subtracting (old - new) the interval is entirely above zero. The new system appears to be effective**
+
+
+
+## Question 7
+
+Suppose that 18 obese subjects were randomized, 9 each, to a new diet pill and a placebo. Subjects’ body mass indices (BMIs) were measured at a baseline and again after having received the treatment or placebo for four weeks. The average difference from follow-up to the baseline (followup - baseline) was −3 kg/m2 for the treated group and 1 kg/m2 for the placebo group. The corresponding standard deviations of the differences was 1.5 kg/m2 for the treatment group and 1.8 kg/m2 for the placebo group. Does the change in BMI over the four week period appear to differ between the treated and placebo groups? Assuming normality of the underlying data and a common population variance, calculate the relevant *90%* t confidence interval. Subtract in the order of (Treated - Placebo) with the smaller (more negative) number first.
+
+- [-5.364, -2.636]
+- [2.636, 5.364]
+- [-5.531, -2.469]
+- [2.469, 5.531]
+
+```{r}
+trt.n <- 9
+trt.mean <- -3
+trt.sd <- 1.5
+trt.var <- trt.sd^2
+
+plc.n <- 9
+plc.mean <- 1
+plc.sd <- 1.8
+plc.var <- plc.sd^2
+
+alpha <- (1 - .9)
+
+(t <- qt(1 - alpha / 2, plc.n + trt.n - 2))
+
+(sp <- sqrt(((plc.n - 1) * plc.var + (trt.n - 1) * trt.var) / (plc.n + trt.n - 2)))
+
+t_conf_interval <- (trt.mean - plc.mean) + c(-1, 1) * t * sp * sqrt(1 / plc.n + 1 / trt.n)
+
+round(t_conf_interval,3)
+```
+
+**The correct answer is [-5.364, -2.636]**
